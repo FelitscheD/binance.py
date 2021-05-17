@@ -7,8 +7,8 @@ from tabulate import tabulate
 system('clear')
 
 #Binance API
-api_key = 'jdjD8AxXhy8Q3icMEoUWUvrcNIpgRzrCszdoxbZofFYJjDrG3gcBixiqXcBIRbQY'
-api_secret = 'Jkn0EJnXauqdxrHR5P4klcX9JCP47nP2Netj71ZPx0FmiwTM3yYhQ2v2eiwjbb34'
+api_key = 'your_api_key'
+api_secret = 'your_api_secret'
 client = Client(api_key, api_secret)
 
 #Farben
