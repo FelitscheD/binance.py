@@ -1,4 +1,4 @@
-import os
+port os
 from binance.client import Client
 import json
 import pprint
@@ -7,7 +7,7 @@ from tabulate import tabulate
 system('clear')
 
 #Binance API
-api_key = 'your_api_key'
+api_key = 'you_api_key'
 api_secret = 'your_api_secret'
 client = Client(api_key, api_secret)
 
@@ -92,7 +92,7 @@ d = [ ["BTC/EUR", btc_preis, btc_euro],
 
 print(tabulate(d, headers=["Krypto", "Kurs", "Asset"]))
 
-print(" ")
+#print(" ")
 print("------------------------------")
 #print(" ")
 gesamt=round((btc_euro + eth_euro + iota_euro + bnb_euro + doge_euro), 2)
@@ -100,8 +100,8 @@ zins=round(gesamt-2100.00, 2)
 
 print
 if gesamt < 2100:
+        print(color_red)
         print(color_red,"Gesamt", gesamt,"€","|","-",zins, "€",reset)
 elif gesamt > 2100:
-        print(color_green, "Gesamt", gesamt,"€","|","+",zins, "€",reset)
-
-
+        print(color_green)
+        print("Gesamt", gesamt,"€","|","+",zins, "€",reset)
