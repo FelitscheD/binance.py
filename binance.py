@@ -7,8 +7,8 @@ from tabulate import tabulate
 system('clear')
 
 #Binance API
-api_key = 'dein_api_key'
-api_secret = 'deinapi_secret'
+api_key = 'jdjD8AxXhy8Q3icMEoUWUvrcNIpgRzrCszdoxbZofFYJjDrG3gcBixiqXcBIRbQY'
+api_secret = 'Jkn0EJnXauqdxrHR5P4klcX9JCP47nP2Netj71ZPx0FmiwTM3yYhQ2v2eiwjbb34'
 client = Client(api_key, api_secret)
 
 #Farben
@@ -96,4 +96,12 @@ print(" ")
 print("------------------------------")
 #print(" ")
 gesamt=round((btc_euro + eth_euro + iota_euro + bnb_euro + doge_euro), 2)
-print("Gesamt", gesamt, "€")
+zins=round(gesamt-2100.00, 2)
+
+print
+if gesamt < 2100:
+        print(color_red,"Gesamt", gesamt,"€","|","-",zins, "€",reset)
+elif gesamt > 2100:
+        print(color_green, "Gesamt", gesamt,"€","|","+",zins, "€",reset)
+
+
