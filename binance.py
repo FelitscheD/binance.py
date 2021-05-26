@@ -1,14 +1,16 @@
-port os
+import os
 from binance.client import Client
 import json
 import pprint
 from os import system
 from tabulate import tabulate
+import requests
+from requests_toolbelt.utils import dump
 system('clear')
 
 #Binance API
-api_key = 'you_api_key'
-api_secret = 'your_api_secret'
+api_key = 'your api key'
+api_secret = 'your api secret'
 client = Client(api_key, api_secret)
 
 #Farben
@@ -54,6 +56,11 @@ doge_preis=float(doge_price["price"])
 doge_eur=round(doge_preis * btc_preis, 2)
 #print("Dogecoin", round(doge_preis, 2),"BTC")
 
+ada_price=client.get_symbol_ticker(symbol="ADABTC")
+ada_preis=float(ada_price["price"])
+ada_eur=round(ada_preis * btc_preis, 2)
+#print("Dogecoin", round(doge_preis, 2),"BTC")
+
 #Wallet
 btc_account=client.get_asset_balance(asset='BTC')
 btc_guthaben=float(btc_account["free"])
@@ -83,25 +90,68 @@ doge_btc=doge_guthaben * doge_preis
 doge_euro=round(doge_btc * btc_preis, 2)
 #print("DOGE"," ",round(doge_eur, 2),"€","  ", round(doge_euro, 2), "€")
 
+ada_account=client.get_asset_balance(asset='ADA')
+ada_guthaben=float(ada_account["free"])
+ada_btc=ada_guthaben * ada_preis
+ada_euro=round(ada_btc * btc_preis, 2)
+
+#Binance Ticker
+
+#Bitcoin 24h ticker
+btc_price_change=requests.get('https://api.binance.com/api/v1/ticker/24hr?symbol=BTCEUR')
+btc_price_change_data=btc_price_change.json()
+btc_24hr=round(float(btc_price_change_data["priceChangePercent"]), 2)
+
+#Ethereum 24h ticker
+eth_price_change=requests.get('https://api.binance.com/api/v1/ticker/24hr?symbol=ETHEUR')
+eth_price_change_data=eth_price_change.json()
+eth_24hr=round(float(eth_price_change_data["priceChangePercent"]), 2)
+
+#Iota 24h ticker
+iota_price_change=requests.get('https://api.binance.com/api/v1/ticker/24hr?symbol=IOTABTC')
+iota_price_change_data=iota_price_change.json()
+iota_24hr=round(float(iota_price_change_data["priceChangePercent"]), 2)
+
+#Binance Coin 24h ticker
+bnb_price_change=requests.get('https://api.binance.com/api/v1/ticker/24hr?symbol=BNBEUR')
+bnb_price_change_data=bnb_price_change.json()
+bnb_24hr=round(float(bnb_price_change_data["priceChangePercent"]), 2)
+
+#Dogecoin 24h ticker
+doge_price_change=requests.get('https://api.binance.com/api/v1/ticker/24hr?symbol=DOGEEUR')
+doge_price_change_data=doge_price_change.json()
+doge_24hr=round(float(doge_price_change_data["priceChangePercent"]), 2)
+
+#ADA 24h ticker
+ada_price_change=requests.get('https://api.binance.com/api/v1/ticker/24hr?symbol=ADAEUR')
+ada_price_change_data=ada_price_change.json()
+ada_24hr=round(float(ada_price_change_data["priceChangePercent"]), 2)
+
 #Tabelle
-d = [ ["BTC/EUR", btc_preis, btc_euro],
-     ["ETH/EUR", eth_eur, eth_euro],
-     ["IOTA/EUR", iota_eur, iota_euro],
-     ["BNB/EUR", bnb_eur, bnb_euro],
-     ["DOGE/EUR", doge_eur, doge_euro]]
+d = [ ["BTC", btc_preis, btc_euro, btc_24hr],
+     ["ETH", eth_eur, eth_euro, eth_24hr],
+     ["IOTA", iota_eur, iota_euro, iota_24hr],
+     ["BNB", bnb_eur, bnb_euro, bnb_24hr],
+     ["DOGE", doge_eur, doge_euro, doge_24hr],
+     ["ADA", ada_eur, ada_euro, ada_24hr]]
 
-print(tabulate(d, headers=["Krypto", "Kurs", "Asset"]))
+print(tabulate(d, headers=["Kry/€", "Kurs", "Asset", "%"]))
 
 #print(" ")
-print("------------------------------")
+print("----------------------------------")
 #print(" ")
-gesamt=round((btc_euro + eth_euro + iota_euro + bnb_euro + doge_euro), 2)
-zins=round(gesamt-2100.00, 2)
+gesamt=round((btc_euro + eth_euro + iota_euro + bnb_euro + doge_euro + ada_euro), 2)
+zins=round(gesamt-2600.00, 2)
+zins_percent=round((zins/gesamt)*100, 2)
 
 print
-if gesamt < 2100:
+if gesamt < 2600:
         print(color_red)
-        print(color_red,"Gesamt", gesamt,"€","|","-",zins, "€",reset)
-elif gesamt > 2100:
+        print("Σ", gesamt,"€","|",zins, "€","|",zins_percent,"%",reset)
+elif gesamt > 2600:
         print(color_green)
-        print("Gesamt", gesamt,"€","|","+",zins, "€",reset)
+        print("Σ", gesamt,"€","|","+",zins, "€","|",zins_percent,"%",reset)
+
+
+
+
